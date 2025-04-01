@@ -12,7 +12,8 @@ connectToMongo();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://inotebook-shahareyar.vercel.app'
+    'https://inotebook-shahareyar.vercel.app',
+    'https://inottebook-frontend.vercel.app'
   ],
   credentials: true, // Enable credentials if needed
 }));
