@@ -12,7 +12,7 @@ connectToMongo();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://docify-saquib.vercel.app/'
+    'https://docify-saquib.vercel.app'
   ],
   credentials: true, // Enable credentials if needed
 }));
