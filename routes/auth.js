@@ -1,10 +1,10 @@
-const express = require('express');
-const User = require('../models/User');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+const express = require('express'); // login, register
+const User = require('../models/User'); // schema call 
+const router = express.Router(); // api bnane ke liye
+const bcrypt = require('bcryptjs'); // hash password
+var jwt = require('jsonwebtoken'); // auth token return after login 
 
-const JWT_SECRET = 'Harryisagoodb$oy';
+const JWT_SECRET = 'Harryisagoodb$oy'; // help to create token
 
 const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization'];
@@ -30,29 +30,33 @@ router.get('/user', authenticateToken, async (req, res) => {
     }
 });
 
+// register
 router.post('/createuser', async (req, res) => {
     const { name, email, password } = req.body;
     try {
-        let user = await User.findOne({ email: req.body.email });
-        let success = false;
+        // check user with req.body.email 
+        let user = await User.findOne({ email: email });
+
         if (user) {
-            success = false;
             return res.status(400).json({ error: "Sorry a user with this email already exists" })
         }
+
         const salt = await bcrypt.genSalt(10);
-        const secPass = await bcrypt.hash(req.body.password, salt);
+        const secPass = await bcrypt.hash(req.body.password, salt); // hash form password
 
         user = await User.create({
             name: req.body.name,
             password: secPass,
             email: req.body.email,
         });
+        
+        // register completed
         const data = {
             user: {
                 id: user.id
             }
         }
-        const authtoken = jwt.sign(data, JWT_SECRET);
+        const authtoken = jwt.sign(data, JWT_SECRET); //auth token created
         success = true;
         res.json({ success, authtoken })
     } catch (error) {

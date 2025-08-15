@@ -1,9 +1,9 @@
-require('dotenv').config();
-const connectToMongo = require('./db');
-const express = require('express');
-const app = express();
-const port = 5000;
-const cors = require('cors');
+require('dotenv').config(); // to access .env file
+const connectToMongo = require('./db'); // databse call
+const express = require('express'); // to create api
+const app = express(); 
+const port = 5000; 
+const cors = require('cors'); // connect to frontend and backend - cross origin resource sharing
 
 // Connect to MongoDB
 connectToMongo();
@@ -14,22 +14,23 @@ app.use(cors({
     'http://localhost:3000',
     'https://docify-saquib.vercel.app'
   ],
-  credentials: true, // Enable credentials if needed
+  credentials: true, 
 }));
-
-// app.use(cors());
 
 // Middleware to parse JSON requests
 app.use(express.json());
 
-// Basic route
+// get - access, post - create, put - edit , delete
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send('<h1>Hello World</h1>');
 });
 
 // API routes
+// Authentication
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/notes', require('./routes/notes'));
+
+// Notes
+// app.use('/api/notes', require('./routes/notes'));
 
 // Start the server
 app.listen(port, () => {
